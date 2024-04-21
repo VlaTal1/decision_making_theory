@@ -133,3 +133,50 @@ def compose_arrays_to_graph(arrays):
         if last_node not in graph:
             graph[last_node] = []
     return graph
+
+
+def comparison_dict_to_sting_list(comparison_dict, dict_refs):
+    comparison_list_str = []
+    for key, value in comparison_dict.items():
+        ref1 = np.array(dict_refs[key[0]])
+        ref1 += 1
+        ref1_str = ''.join(map(str, ref1))
+
+        ref2 = np.array(dict_refs[key[1]])
+        ref2 += 1
+        ref2_str = ''.join(map(str, ref2))
+
+        string = ''
+        if value == None:
+            string = f'{ref1_str} ? {ref2_str}'
+        elif value == '>':
+            string = f'{ref1_str} > {ref2_str}'
+        elif value == '<':
+            string = f'{ref1_str} < {ref2_str}'
+        comparison_list_str.append(string)
+
+    return comparison_list_str
+
+def path_to_string_dict(path, dict_refs):
+    path_refs = [dict_refs[key].copy() for key in path]
+    for ref in path_refs:
+        ref += 1
+    path_refs = [''.join(map(str, ref)) for ref in path_refs]
+    return ' -> '.join(path_refs)
+
+def increment_values(array: List[str]):
+    incremented = []
+    for item in array:
+        int_arr = []
+        for char in item:
+            int_arr.append(int(char) + 1)
+        incremented.append(''.join(map(str, int_arr)))
+
+    return incremented
+
+def path_to_string(path):
+    path_refs = increment_values(path)
+    return ' -> '.join(path_refs)
+
+def ref_to_str(ref):
+    return increment_values([ref])[0]
