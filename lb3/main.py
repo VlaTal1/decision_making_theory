@@ -117,11 +117,18 @@ class App:
 
         table = ttk.Treeview(table_frame, columns=columns, show="headings")
 
+        table.tag_configure('greenrow', background='green')
+
+        min_score = find_min_score(final_table)
+
         for col in columns:
             table.heading(col, text=col)
 
         for alt, values in final_table.items():
-            table.insert("", "end", values=(alt, *values))
+            if int(values[-1]) == min_score:
+                table.insert("", "end", values=(alt, *values), tags=('greenrow',))
+            else:
+                table.insert("", "end", values=(alt, *values))
 
         table.pack(expand=True, fill="both")
 

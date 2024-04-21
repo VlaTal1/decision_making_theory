@@ -2,6 +2,7 @@ import itertools
 import numpy as np
 from typing import Dict, List, Tuple
 from itertools import combinations
+import math
 
 
 # TODO move to MultiCriteria if only one usage
@@ -157,12 +158,14 @@ def comparison_dict_to_sting_list(comparison_dict, dict_refs):
 
     return comparison_list_str
 
+
 def path_to_string_dict(path, dict_refs):
     path_refs = [dict_refs[key].copy() for key in path]
     for ref in path_refs:
         ref += 1
     path_refs = [''.join(map(str, ref)) for ref in path_refs]
     return ' -> '.join(path_refs)
+
 
 def increment_values(array: List[str]):
     incremented = []
@@ -174,9 +177,20 @@ def increment_values(array: List[str]):
 
     return incremented
 
+
 def path_to_string(path):
     path_refs = increment_values(path)
     return ' -> '.join(path_refs)
 
+
 def ref_to_str(ref):
     return increment_values([ref])[0]
+
+
+def find_min_score(final_table):
+    min_value = math.inf
+    for key, value in final_table.items():
+        last_element = int(value[-1])
+        if last_element < min_value:
+            min_value = last_element
+    return min_value
