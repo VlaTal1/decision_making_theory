@@ -18,8 +18,17 @@ class App:
         self.root = root
         self.root.title("Впорядкування багатокритеріальних альтернатив")
 
-        self.history_frame = tk.Frame(self.root)
-        self.history_frame.pack(side=tk.RIGHT, padx=10, pady=10, fill=tk.BOTH, expand=True)
+        self.canvas = tk.Canvas(self.root)
+        self.canvas.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+
+        self.scrollbar = tk.Scrollbar(self.root, orient="vertical", command=self.canvas.yview)
+        self.scrollbar.pack(side=tk.RIGHT, fill="y")
+
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+        self.canvas.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
+
+        self.history_frame = tk.Frame(self.canvas)
+        self.canvas.create_window((0, 0), window=self.history_frame, anchor="nw")
 
         self.init_window()
 
@@ -46,7 +55,6 @@ class App:
             
             for comb in comparison_dict.keys():
                 comparison_list = comparison_dict_to_sting_list(comparison_dict, dict_refs)
-                print(comparison_dict)
                 if comparison_dict[comb] == None:
                     ref1 = dict_refs[comb[0]]
                     ref2 = dict_refs[comb[1]]
@@ -81,7 +89,6 @@ class App:
             comparison_graph = create_graph(dict_refs, comparison_dict)
             longest_path = find_longest_path(comparison_graph)
             comparison = Comparison(comparison, dict_refs, comparison_dict, comparison_graph, longest_path)
-            print(comparison)
             self.comparisons.append(comparison)
             
             self.update_history(comparison_text, ("Helvetica", 12, "bold"))
@@ -93,20 +100,22 @@ class App:
 
             comparison_label.destroy()
 
-        # self.comparisons = [COMPARISON1, COMPARISON2, COMPARISON3]
-        
         longest_paths = [comparison.get_longest_path_refs_str() for comparison in self.comparisons]
         final_graph = compose_arrays_to_graph(longest_paths)
         final_path = find_longest_path(final_graph)
 
         self.update_history(f'ЄПШ: {path_to_string(final_path)}', font=("Helvetica", 12, "bold"))
         final_table = self.mc.calculate_final_table(final_path)
+        print(final_table)
         self.init_table(final_table)
 
     def init_table(self, final_table):
+        table_frame = tk.Frame(self.history_frame)
+        table_frame.pack(pady=10, padx=10, fill=tk.BOTH, expand=True)
+
         columns = ["Альтернатива", "Векторна початкова оцінка", "Векторна оцінка за ЄПШ", "Векторна оцінка за зростанням"]
 
-        table = ttk.Treeview(self.root, columns=columns, show="headings")
+        table = ttk.Treeview(table_frame, columns=columns, show="headings")
 
         for col in columns:
             table.heading(col, text=col)
