@@ -6,6 +6,7 @@ from HierarchyAnalysis import HierarchyAnalysis
 from CriteriaComparison import CriteriaComparison
 from utils import *
 from _consts import *
+import random
 
 default_font = ("Helvetica", 10)
 
@@ -16,6 +17,7 @@ class App:
         self.cc = CriteriaComparison()
         self.ac = init_alternative_comparisons()
         self.calculated_alternatives: List[AlternativeComparison] = []
+        # self.init_random_values()
 
         self.root = root
         self.root.title("Метод аналізу ієрархій")
@@ -72,7 +74,7 @@ class App:
             CRITERIA) + 2, pady=5, padx=10, sticky="w")
         alt_weight_label.grid(row=0, column=len(
             CRITERIA) + 3, pady=5, padx=10, sticky="w")
-        
+
     def compare_alternatives(self):
         self.calculated_alternatives.append(self.ac[0])
         self.ac.pop(0)
@@ -80,7 +82,8 @@ class App:
         self.table_frame = tk.Frame(self.root)
         self.table_frame.pack()
 
-        criterion_name = tk.Label(self.table_frame, text=self.calculated_alternatives[-1].criteria_name)
+        criterion_name = tk.Label(
+            self.table_frame, text=self.calculated_alternatives[-1].criteria_name)
         criterion_name.grid(row=0, column=0, pady=5, padx=10, sticky="w")
 
         calculate_alternative_button = tk.Button(
@@ -91,8 +94,10 @@ class App:
         calculate_alternative_button.pack(side=tk.LEFT, anchor=tk.NW)
         next_alternative_button.pack(side=tk.LEFT, anchor=tk.NW)
 
-        calculate_alternative_button.bind("<Button-1>", self.calculate_alternative_comparison)
-        next_alternative_button.bind("<Button-1>", self.next_alternatives_comparison)
+        calculate_alternative_button.bind(
+            "<Button-1>", self.calculate_alternative_comparison)
+        next_alternative_button.bind(
+            "<Button-1>", self.next_alternatives_comparison)
 
         for i, crit in enumerate(ALTERNATIVES):
             # Create labels for criteria names
@@ -132,7 +137,8 @@ class App:
         # Get the selected value from the dropdown
         selected_value = event.widget.get()
         # Update the corresponding cell below the diagonal with the value from SCALE
-        self.cc.criteria_comparisons[row, column] = STR_TO_SCALE[selected_value]
+        self.cc.criteria_comparisons[row,
+                                     column] = STR_TO_SCALE[selected_value]
         # Update the corresponding cell above the diagonal as reciprocal
         self.cc.criteria_comparisons[column, row] = float(
             INVERTED_SCALE[STR_TO_SCALE[selected_value]])
@@ -143,7 +149,8 @@ class App:
         # Get the selected value from the dropdown
         selected_value = event.widget.get()
         # Update the corresponding cell below the diagonal with the value from SCALE
-        self.calculated_alternatives[-1].comparison_table[row, column] = STR_TO_SCALE[selected_value]
+        self.calculated_alternatives[-1].comparison_table[row,
+                                                          column] = STR_TO_SCALE[selected_value]
         # Update the corresponding cell above the diagonal as reciprocal
         self.calculated_alternatives[-1].comparison_table[column, row] = float(
             INVERTED_SCALE[STR_TO_SCALE[selected_value]])
@@ -223,21 +230,27 @@ class App:
             label.grid(row=i+1, column=len(ALTERNATIVES) + 3, pady=5, padx=10)
 
     def go_to_alternatives_comparison(self, event):
-        print(len(self.cc.self_vector), len(self.cc.criteria_weight), len(CRITERIA))
+        print(len(self.cc.self_vector), len(
+            self.cc.criteria_weight), len(CRITERIA))
         if check_for_zeros(self.cc.criteria_comparisons):
-            messagebox.showwarning("Помилка", "Заповніть усі значення та натисніть кнопку порахувати перед тим, як перейти до наступного кроку")
+            messagebox.showwarning(
+                "Помилка", "Заповніть усі значення та натисніть кнопку порахувати перед тим, як перейти до наступного кроку")
         elif len(self.cc.self_vector) != len(CRITERIA) or len(self.cc.criteria_weight) != len(CRITERIA):
-            messagebox.showwarning("Помилка", "Натисніть кнопку порахувати перед тим, як перейти до наступного кроку")
+            messagebox.showwarning(
+                "Помилка", "Натисніть кнопку порахувати перед тим, як перейти до наступного кроку")
         else:
             self.clear_window()
             self.compare_alternatives()
 
     def next_alternatives_comparison(self, event):
-        print(len(self.calculated_alternatives[-1].self_vector), len(self.calculated_alternatives[-1].weight_vector), len(ALTERNATIVES))
+        print(len(self.calculated_alternatives[-1].self_vector), len(
+            self.calculated_alternatives[-1].weight_vector), len(ALTERNATIVES))
         if check_for_zeros(self.calculated_alternatives[-1].comparison_table):
-            messagebox.showwarning("Помилка", "Заповніть усі значення та натисніть кнопку порахувати перед тим, як перейти до наступного кроку")
+            messagebox.showwarning(
+                "Помилка", "Заповніть усі значення та натисніть кнопку порахувати перед тим, як перейти до наступного кроку")
         elif len(self.calculated_alternatives[-1].comparison_table) != len(ALTERNATIVES) or len(self.calculated_alternatives[-1].weight_vector) != len(ALTERNATIVES):
-            messagebox.showwarning("Помилка", "Натисніть кнопку порахувати перед тим, як перейти до наступного кроку")
+            messagebox.showwarning(
+                "Помилка", "Натисніть кнопку порахувати перед тим, як перейти до наступного кроку")
         else:
             self.clear_window()
             # TODO add final output
@@ -253,10 +266,12 @@ class App:
         if not check_for_zeros(self.calculated_alternatives[-1].comparison_table):
             for values in self.calculated_alternatives[-1].comparison_table:
                 self_vector = np.power(np.prod(values), 1 / len(ALTERNATIVES))
-                self.calculated_alternatives[-1].self_vector.append(self_vector)
+                self.calculated_alternatives[-1].self_vector.append(
+                    self_vector)
 
             for value in self.calculated_alternatives[-1].self_vector:
-                weight = value / np.sum(self.calculated_alternatives[-1].self_vector)
+                weight = value / \
+                    np.sum(self.calculated_alternatives[-1].self_vector)
                 self.calculated_alternatives[-1].weight_vector.append(weight)
 
             self.draw_alternative_calculation()
@@ -273,7 +288,46 @@ class App:
             alternative_weight = np.array(ac.weight_vector)
             alternative_weights.append(alternative_weight)
 
-        print(np.dot(criteria_weight, np.array(alternative_weights)))
+        result = np.dot(criteria_weight, np.array(alternative_weights))
+        self.max_result = np.max(result)
+
+        for alt_value, res in zip(ALTERNATIVES.values(), result):
+            alt_value.append(res)
+
+    def init_final_table(self):
+        table_frame = tk.Frame(self.root)
+        table_frame.pack(pady=10, padx=10, fill=tk.BOTH, expand=True)
+
+        columns = CRITERIA + ['Показник якості']
+
+        table = ttk.Treeview(table_frame, columns=columns, show="headings")
+
+        table.tag_configure('greenrow', background='green')
+
+        for col in columns:
+            table.heading(col, text=col)
+
+        for alt, values in ALTERNATIVES.items():
+            if int(values[-1]) == self.max_result:
+                table.insert("", "end", values=(alt, *values), tags=('greenrow',))
+            else:
+                table.insert("", "end", values=(alt, *values))
+
+        table.pack(expand=True, fill="both")
+
+    def draw_results(self):
+        label_row = tk.Label(self.root, text="Поріняння критеріїв", font=("Helvetica", 12))
+        label_row.pack(pady=5, padx=10)
+        self.cc.create_table(self.root).pack()
+        for ac in self.calculated_alternatives:
+            label_row = tk.Label(self.root, text=f"Поріняння альтернатив за критерієм {ac.criteria_name}",
+                                 font=("Helvetica", 12))
+            label_row.pack(pady=5, padx=10)
+            ac.create_table(self.root).pack()
+        label_row = tk.Label(self.root, text=f"Список альтернатив та найкраща за показником якості",
+                             font=("Helvetica", 12))
+        label_row.pack(pady=5, padx=10)
+        self.init_final_table()
 
     def init_window(self):
         self.compare_criteria()

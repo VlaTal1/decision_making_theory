@@ -1,3 +1,5 @@
+import tkinter as tk
+from tkinter import ttk
 import numpy as np
 from _consts import ALTERNATIVES
 
@@ -7,3 +9,22 @@ class AlternativeComparison:
         self.comparison_table = np.zeros((len(ALTERNATIVES), len(ALTERNATIVES)))
         self.self_vector = []
         self.weight_vector = []
+        self.quality_indicator = 0
+
+    def create_table(self, parent):
+        table = ttk.Treeview(parent)
+
+        # Define columns
+        table["columns"] = list(ALTERNATIVES.keys()) + ["Власний вектор", "Вага альтернатив"]
+
+        # Format columns
+        table.column("#0", width=100, minwidth=100, stretch=tk.NO)
+        for column in table["columns"]:
+            table.column(column, width=100, minwidth=100, stretch=tk.NO)
+            table.heading(column, text=column)
+
+        # Insert data
+        for i, alternative in enumerate(ALTERNATIVES):
+            table.insert("", i, text=alternative, values=list(self.comparison_table[i]) + [self.self_vector[i], self.weight_vector[i]])
+
+        return table
