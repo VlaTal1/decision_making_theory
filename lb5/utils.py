@@ -1,7 +1,9 @@
 from typing import List
+
 import numpy as np
-from _consts import CRITERIA
+
 from AlternativeComparison import AlternativeComparison
+from _consts import CRITERIA
 
 
 def check_for_zeros(arr):
@@ -10,6 +12,7 @@ def check_for_zeros(arr):
         return True
     else:
         return False
+
 
 def init_alternative_comparisons() -> List[AlternativeComparison]:
     comparisons = []

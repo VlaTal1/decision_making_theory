@@ -1,7 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
+
 import numpy as np
-from _consts import ALTERNATIVES
+
+from _consts import ALTERNATIVES, SCALE_TO_STR
+
 
 class AlternativeComparison:
     def __init__(self, criteria_name) -> None:
@@ -25,6 +28,11 @@ class AlternativeComparison:
 
         # Insert data
         for i, alternative in enumerate(ALTERNATIVES):
-            table.insert("", i, text=alternative, values=list(self.comparison_table[i]) + [self.self_vector[i], self.weight_vector[i]])
+            comparison_table_str = []
+            for comparison in self.comparison_table[i]:
+                comparison_table_str.append(SCALE_TO_STR[str(comparison)])
+            table.insert("", i, text=alternative,
+                         values=list(comparison_table_str) + [round(self.self_vector[i], 2),
+                                                              round(self.weight_vector[i], 2)])
 
         return table

@@ -1,7 +1,8 @@
-import tkinter as tk
 from tkinter import ttk
+
 import numpy as np
-from _consts import CRITERIA
+
+from _consts import CRITERIA, SCALE_TO_STR
 
 
 class CriteriaComparison:
@@ -14,8 +15,7 @@ class CriteriaComparison:
         table = ttk.Treeview(parent)
 
         # Define columns
-        table["columns"] = CRITERIA + \
-            ["Власний вектор", "Вага альтернатив"]
+        table["columns"] = CRITERIA + ["Власний вектор", "Вага альтернатив"]
 
         # Format columns
         table.column("#0", width=100, minwidth=100)
@@ -25,7 +25,10 @@ class CriteriaComparison:
 
         # Insert data
         for i, criteria in enumerate(CRITERIA):
+            criteria_comparison_str = []
+            for comparison in self.criteria_comparisons[i]:
+                criteria_comparison_str.append(SCALE_TO_STR[str(comparison)])
             table.insert("", i, text=criteria, values=list(
-                self.criteria_comparisons[i]) + [self.self_vector[i], self.criteria_weight[i]])
+                criteria_comparison_str) + [round(self.self_vector[i], 2), round(self.criteria_weight[i], 2)])
 
         return table
