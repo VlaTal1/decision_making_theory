@@ -1,10 +1,13 @@
 from pprint import pprint as pp
+from RelativeMajority import RelativeMajority
 
 
 class CollectiveDecision:
     def __init__(self):
         self.original_data = None
         self.voting_profile = {}
+
+        self.rm = None
 
     def process_data(self, data):
         self.original_data = data
@@ -18,3 +21,5 @@ class CollectiveDecision:
 
         print(len(self.voting_profile))
         pp(self.voting_profile)
+
+        self.rm = RelativeMajority(self.voting_profile)

@@ -29,7 +29,7 @@ class App:
 
         self.entry_voters = tk.Entry(self.root)
         self.entry_voters.pack(side=tk.TOP, padx=10, pady=5)
-        self.entry_voters.insert(0, "100")
+        self.entry_voters.insert(0, "34")
 
         self.btn_select_file = tk.Button(self.root, text="Обрати CSV файл", command=self.load_csv)
         self.btn_select_file.pack(side=tk.TOP, padx=10, pady=5)
