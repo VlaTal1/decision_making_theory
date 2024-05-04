@@ -1,6 +1,7 @@
 from pprint import pprint as pp
 from RelativeMajority import RelativeMajority
 from AbsoluteMajority import AbsoluteMajority
+from BordRule import BordRule
 
 
 class CollectiveDecision:
@@ -10,6 +11,7 @@ class CollectiveDecision:
 
         self.rm = None
         self.am = None
+        self.br = None
 
     def process_data(self, data):
         self.original_data = data
@@ -26,3 +28,4 @@ class CollectiveDecision:
 
         self.rm = RelativeMajority(self.voting_profile)
         self.am = AbsoluteMajority(self.voting_profile)
+        self.br = BordRule(self.voting_profile)
