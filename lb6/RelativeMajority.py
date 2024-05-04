@@ -13,7 +13,7 @@ class RelativeMajority:
 
     def find_winner(self):
         scores, sorted_scores = execute_round(self.voting_profile)
-        self.alternatives_scores = scores
+        self.alternatives_scores = sorted_scores
         self.winner = sorted_scores[0][0]
 
         print("========================== Relative Majority ==========================")

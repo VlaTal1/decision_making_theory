@@ -20,7 +20,7 @@ class AbsoluteMajority:
 
     def first_round(self):
         scores, sorted_scores = execute_round(self.voting_profile)
-        self.first_round_scores = scores
+        self.first_round_scores = sorted_scores
         self.first_round_winners = [sorted_scores[0][0], sorted_scores[1][0]]
 
         print("========================== Absolute Majority ==========================")
@@ -35,7 +35,7 @@ class AbsoluteMajority:
 
         scores, sorted_scores = execute_round(filtered_voting_profile)
 
-        self.second_round_scores = scores
+        self.second_round_scores = sorted_scores
         self.second_round_profile = filtered_voting_profile
         self.second_round_winner = sorted_scores[0][0]
 

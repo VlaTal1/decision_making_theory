@@ -18,8 +18,8 @@ class BordRule:
                     if value == alternative:
                         alternatives_scores[alternative] += amount * (len(vote) - i - 1)
 
-        self.alternatives_scores = alternatives_scores
         sorted_scores = sort_scores_desc(alternatives_scores)
+        self.alternatives_scores = sorted_scores
         self.winner = sorted_scores[0][0]
 
         print("========================== Bord Rule ==========================")
