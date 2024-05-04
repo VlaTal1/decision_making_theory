@@ -1,3 +1,6 @@
+from itertools import combinations
+
+
 def sort_scores_desc(scores: dict[str, int]) -> list[tuple[str, int]]:
     return sorted(scores.items(), key=lambda x: x[1], reverse=True)
 
@@ -35,3 +38,8 @@ def filter_votes(voting_profile: dict[tuple, int], alternatives: list[str]) -> d
             filtered_voting_profile[tuple(new_vote)] = amount
 
     return filtered_voting_profile
+
+
+def create_combinations(arr):
+    result = list(combinations(arr, 2))
+    return result
