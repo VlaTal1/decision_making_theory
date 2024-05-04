@@ -1,5 +1,6 @@
 from pprint import pprint as pp
 from RelativeMajority import RelativeMajority
+from AbsoluteMajority import AbsoluteMajority
 
 
 class CollectiveDecision:
@@ -8,6 +9,7 @@ class CollectiveDecision:
         self.voting_profile = {}
 
         self.rm = None
+        self.am = None
 
     def process_data(self, data):
         self.original_data = data
@@ -23,3 +25,4 @@ class CollectiveDecision:
         pp(self.voting_profile)
 
         self.rm = RelativeMajority(self.voting_profile)
+        self.am = AbsoluteMajority(self.voting_profile)

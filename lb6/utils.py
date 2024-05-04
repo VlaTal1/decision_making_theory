@@ -16,6 +16,22 @@ def execute_round(voting_profile: dict[tuple, int]):
         scores[alt] += amount
 
     sorted_scores = sort_scores_desc(scores)
-    winner = sorted_scores[0][0]
 
-    return scores, winner
+    return scores, sorted_scores
+
+
+def filter_votes(voting_profile: dict[tuple, int], alternatives: list[str]) -> dict[tuple, int]:
+    filtered_voting_profile = {}
+
+    for vote, amount in voting_profile.items():
+        new_vote = []
+        for value in vote:
+            if value in alternatives:
+                new_vote.append(value)
+
+        if tuple(new_vote) in filtered_voting_profile.keys():
+            filtered_voting_profile[tuple(new_vote)] += amount
+        else:
+            filtered_voting_profile[tuple(new_vote)] = amount
+
+    return filtered_voting_profile
