@@ -1,5 +1,6 @@
-from utils import sort_scores_desc, init_alternatives_scores, execute_round
 from pprint import pprint as pp
+
+from utils import execute_round
 
 
 class RelativeMajority:
@@ -11,9 +12,9 @@ class RelativeMajority:
         self.find_winner()
 
     def find_winner(self):
-        scores, winner = execute_round(self.voting_profile)
+        scores, _, winner = execute_round(self.voting_profile)
         self.alternatives_scores = scores
         self.winner = winner
 
-        print(self.alternatives_scores)
+        pp(self.alternatives_scores)
         print(self.winner)
