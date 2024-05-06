@@ -1,3 +1,6 @@
+import tkinter as tk
+
+from _consts import H1, H2, DEF_FONT
 from lb6.utils import init_alternatives_scores, sort_scores_desc
 
 
@@ -27,3 +30,24 @@ class BordRule:
         print(alternatives_scores)
         print("Winner:")
         print(self.winner)
+
+    def get_frame(self, root):
+        bord_frame = tk.Frame(root)
+        comparison_label = tk.Label(bord_frame, text="Правило Борда", font=H1)
+        comparison_label.pack(anchor=tk.W, padx=10, pady=(20, 5))
+
+        results_label = tk.Label(bord_frame, text="Результати", font=H2)
+        results_label.pack(anchor=tk.W, padx=10, pady=5)
+        for alternative, score in self.alternatives_scores:
+            label = tk.Label(bord_frame, text=f"{alternative} = {score}", font=DEF_FONT)
+            label.pack(anchor=tk.W, padx=10, pady=5)
+
+        if self.alternatives_scores[0][1] == self.alternatives_scores[1][1]:
+            winner_text = f"Альтернативи \"{self.alternatives_scores[0][0]}\" та \"{self.alternatives_scores[1][0]}\" виявились рівноцінно кращими"
+        else:
+            winner_text = f"Альтернатива \"{self.alternatives_scores[0][0]}\" виявилась кращою"
+
+        winner_label = tk.Label(bord_frame, text=winner_text, font=DEF_FONT)
+        winner_label.pack(anchor=tk.W, padx=10, pady=5)
+
+        return bord_frame
