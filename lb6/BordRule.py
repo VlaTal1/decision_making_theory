@@ -9,6 +9,7 @@ class BordRule:
         self.voting_profile = voting_profile
         self.alternatives_scores = {}
         self.winner = None
+        self.winners = {}
 
         self.find_winner()
 
@@ -24,6 +25,11 @@ class BordRule:
         sorted_scores = sort_scores_desc(alternatives_scores)
         self.alternatives_scores = sorted_scores
         self.winner = sorted_scores[0][0]
+
+        winner_score = sorted_scores[0][1]
+        for alternative, score in sorted_scores:
+            if score == winner_score:
+                self.winners[alternative] = score
 
         print("========================== Bord Rule ==========================")
         print("Scores:")

@@ -11,6 +11,7 @@ class CondorseRule:
         self.alternatives_scores = {}
         self.comparisons_results = []
         self.winner = None
+        self.winners = {}
 
         self.find_winner()
 
@@ -23,8 +24,6 @@ class CondorseRule:
             scores, sorted_scores = execute_round(filtered_votes)
             self.comparisons_results.append(sorted_scores)
             print(combination, sorted_scores)
-            if combination == ('GPT-4 Turbo', 'GPT-3.5 Turbo'):
-                pass
             alternatives_scores[sorted_scores[0][0]] += 1
             if sorted_scores[0][1] == sorted_scores[1][1]:
                 alternatives_scores[sorted_scores[1][0]] += 1
@@ -32,6 +31,12 @@ class CondorseRule:
         sorted_scores = sort_scores_desc(alternatives_scores)
         self.alternatives_scores = sorted_scores
         self.winner = sorted_scores[0][0]
+
+        winner_score = sorted_scores[0][1]
+        for alternative, score in sorted_scores:
+            if score == winner_score:
+                self.winners[alternative] = score
+
         print("Scores:")
         pp(self.alternatives_scores)
         print("Winner:")

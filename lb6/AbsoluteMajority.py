@@ -13,6 +13,7 @@ class AbsoluteMajority:
         self.second_round_scores = init_alternatives_scores(list(voting_profile.keys())[0])
         self.second_round_profile = {}
         self.second_round_winner = None
+        self.winners = {}
 
         self.find_winner()
 
@@ -40,6 +41,12 @@ class AbsoluteMajority:
         self.second_round_scores = sorted_scores
         self.second_round_profile = filtered_voting_profile
         self.second_round_winner = sorted_scores[0][0]
+
+        winner_score = sorted_scores[0][1]
+
+        for alternative, score in sorted_scores:
+            if score == winner_score:
+                self.winners[alternative] = score
 
         print("Second round:")
         print("Scores:")
