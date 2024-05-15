@@ -48,8 +48,8 @@ class BordRule:
             label = tk.Label(bord_frame, text=f"{alternative} = {score}", font=DEF_FONT)
             label.pack(anchor=tk.W, padx=10, pady=5)
 
-        if self.alternatives_scores[0][1] == self.alternatives_scores[1][1]:
-            winner_text = f"Альтернативи \"{self.alternatives_scores[0][0]}\" та \"{self.alternatives_scores[1][0]}\" виявились рівноцінно кращими"
+        if len(list(self.winners.keys())) > 1:
+            winner_text = 'Альтернативи ' + ', '.join(list(self.winners.keys())) + f' виявились рівносильними з кількістю очків {self.alternatives_scores[0][1]}'
         else:
             winner_text = f"Альтернатива \"{self.alternatives_scores[0][0]}\" виявилась кращою"
 

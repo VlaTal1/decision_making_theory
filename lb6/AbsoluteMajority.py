@@ -10,10 +10,11 @@ class AbsoluteMajority:
         self.voting_profile = voting_profile
         self.first_round_scores = init_alternatives_scores(list(voting_profile.keys())[0])
         self.first_round_winners = []
+        self.first_round_winners_dict = {}
         self.second_round_scores = init_alternatives_scores(list(voting_profile.keys())[0])
         self.second_round_profile = {}
         self.second_round_winner = None
-        self.winners = {}
+        self.second_round_winners_dict = {}
 
         self.find_winner()
 
@@ -25,6 +26,12 @@ class AbsoluteMajority:
         scores, sorted_scores = execute_round(self.voting_profile)
         self.first_round_scores = sorted_scores
         self.first_round_winners = [sorted_scores[0][0], sorted_scores[1][0]]
+
+        winner_score = sorted_scores[0][1]
+
+        for alternative, score in sorted_scores:
+            if score == winner_score:
+                self.first_round_winners_dict[alternative] = score
 
         print("========================== Absolute Majority ==========================")
         print("First round:")
@@ -46,7 +53,7 @@ class AbsoluteMajority:
 
         for alternative, score in sorted_scores:
             if score == winner_score:
-                self.winners[alternative] = score
+                self.second_round_winners_dict[alternative] = score
 
         print("Second round:")
         print("Scores:")
@@ -67,8 +74,8 @@ class AbsoluteMajority:
             label = tk.Label(absolute_frame, text=f"{alternative} = {score}", font=DEF_FONT)
             label.pack(anchor=tk.W, padx=10, pady=5)
 
-        if self.first_round_scores[0][1] == self.first_round_scores[1][1]:
-            first_round_winner_text = f"Альтернативи \"{self.first_round_scores[0][0]}\" та \"{self.first_round_scores[1][0]}\" виявились рівноцінно кращими"
+        if len(list(self.first_round_winners_dict.keys())) > 1:
+            first_round_winner_text = 'Альтернативи ' + ', '.join(list(self.first_round_winners_dict.keys())) + f' виявились рівносильними з кількістю очків {self.first_round_scores[0][1]}'
         else:
             first_round_winner_text = f"Альтернатива \"{self.first_round_scores[0][0]}\" виявилась кращою"
         first_round_winner_label = tk.Label(absolute_frame, text=first_round_winner_text, font=DEF_FONT)
@@ -80,8 +87,8 @@ class AbsoluteMajority:
             label = tk.Label(absolute_frame, text=f"{alternative} = {score}", font=DEF_FONT)
             label.pack(anchor=tk.W, padx=10, pady=5)
 
-        if self.second_round_scores[0][1] == self.second_round_scores[1][1]:
-            second_round_winner_text = f"Альтернативи \"{self.second_round_scores[0][0]}\" та \"{self.second_round_scores[1][0]}\" виявились рівноцінно кращими"
+        if len(list(self.second_round_winners_dict.keys())) > 1:
+            second_round_winner_text = 'Альтернативи ' + ', '.join(list(self.second_round_winners_dict.keys())) + f' виявились рівносильними з кількістю очків {self.second_round_scores[0][1]}'
         else:
             second_round_winner_text = f"Альтернатива \"{self.second_round_scores[0][0]}\" виявилась кращою"
         second_round_winner_label = tk.Label(absolute_frame, text=second_round_winner_text, font=DEF_FONT)

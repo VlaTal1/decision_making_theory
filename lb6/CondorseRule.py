@@ -69,12 +69,12 @@ class CondorseRule:
             label = tk.Label(condorse_frame, text=f"{alternative} = {score}", font=DEF_FONT)
             label.pack(anchor=tk.W, padx=10, pady=5)
 
-        if self.alternatives_scores[0][1] == self.alternatives_scores[1][1]:
-            winner = f"Альтернативи \"{self.alternatives_scores[0][0]}\" та \"{self.alternatives_scores[1][0]}\" виявились рівноцінно кращими"
+        if len(list(self.winners.keys())) > 1:
+            winner_text = 'Альтернативи ' + ', '.join(list(self.winners.keys())) + f' виявились рівносильними з кількістю очків {self.alternatives_scores[0][1]}'
         else:
-            winner = f"Альтернатива \"{self.alternatives_scores[0][0]}\" виявилась кращою"
+            winner_text = f"Альтернатива \"{self.alternatives_scores[0][0]}\" виявилась кращою"
 
-        winner_label = tk.Label(condorse_frame, text=winner, font=DEF_FONT)
+        winner_label = tk.Label(condorse_frame, text=winner_text, font=DEF_FONT)
         winner_label.pack(anchor=tk.W, padx=10, pady=5)
 
         return condorse_frame
