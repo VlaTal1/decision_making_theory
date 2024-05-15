@@ -43,3 +43,13 @@ def filter_votes(voting_profile: dict[tuple, int], alternatives: list[str]) -> d
 def create_combinations(arr):
     result = list(combinations(arr, 2))
     return result
+
+
+def get_winners_text(winners: dict[str, int]) -> str:
+    if len(list(winners.keys())) > 1:
+        winner_text = 'Альтернативи ' + ', '.join(
+            list(winners.keys())) + f' виявились рівносильними з кількістю очків {winners[list(winners.keys())[0]]}'
+    else:
+        winner_text = f"Альтернатива \"{list(winners.keys())[0]}\" виявилась кращою"
+
+    return winner_text

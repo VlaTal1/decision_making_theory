@@ -1,7 +1,7 @@
 import tkinter as tk
 
 from _consts import H1, H2, DEF_FONT
-from lb6.utils import init_alternatives_scores, sort_scores_desc
+from lb6.utils import init_alternatives_scores, sort_scores_desc, get_winners_text
 
 
 class BordRule:
@@ -12,6 +12,9 @@ class BordRule:
         self.winners = {}
 
         self.find_winner()
+
+    def get_method_name(self):
+        return 'Правило борда'
 
     def find_winner(self):
         alternatives_scores = init_alternatives_scores(list(self.voting_profile.keys())[0])
@@ -48,12 +51,7 @@ class BordRule:
             label = tk.Label(bord_frame, text=f"{alternative} = {score}", font=DEF_FONT)
             label.pack(anchor=tk.W, padx=10, pady=5)
 
-        if len(list(self.winners.keys())) > 1:
-            winner_text = 'Альтернативи ' + ', '.join(list(self.winners.keys())) + f' виявились рівносильними з кількістю очків {self.alternatives_scores[0][1]}'
-        else:
-            winner_text = f"Альтернатива \"{self.alternatives_scores[0][0]}\" виявилась кращою"
-
-        winner_label = tk.Label(bord_frame, text=winner_text, font=DEF_FONT)
+        winner_label = tk.Label(bord_frame, text=get_winners_text(self.winners), font=DEF_FONT)
         winner_label.pack(anchor=tk.W, padx=10, pady=5)
 
         return bord_frame

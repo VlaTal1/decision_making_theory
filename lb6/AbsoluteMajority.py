@@ -2,7 +2,7 @@ import tkinter as tk
 from pprint import pprint as pp
 
 from _consts import H1, H2, DEF_FONT
-from utils import init_alternatives_scores, execute_round, filter_votes
+from utils import init_alternatives_scores, execute_round, filter_votes, get_winners_text
 
 
 class AbsoluteMajority:
@@ -17,6 +17,9 @@ class AbsoluteMajority:
         self.second_round_winners_dict = {}
 
         self.find_winner()
+
+    def get_method_name(self):
+        return 'Абсолютна більшість'
 
     def find_winner(self):
         self.first_round()
@@ -74,11 +77,7 @@ class AbsoluteMajority:
             label = tk.Label(absolute_frame, text=f"{alternative} = {score}", font=DEF_FONT)
             label.pack(anchor=tk.W, padx=10, pady=5)
 
-        if len(list(self.first_round_winners_dict.keys())) > 1:
-            first_round_winner_text = 'Альтернативи ' + ', '.join(list(self.first_round_winners_dict.keys())) + f' виявились рівносильними з кількістю очків {self.first_round_scores[0][1]}'
-        else:
-            first_round_winner_text = f"Альтернатива \"{self.first_round_scores[0][0]}\" виявилась кращою"
-        first_round_winner_label = tk.Label(absolute_frame, text=first_round_winner_text, font=DEF_FONT)
+        first_round_winner_label = tk.Label(absolute_frame, text=get_winners_text(self.first_round_winners_dict), font=DEF_FONT)
         first_round_winner_label.pack(anchor=tk.W, padx=10, pady=5)
 
         second_round_label = tk.Label(absolute_frame, text="Результати другого туру", font=H2)
@@ -87,11 +86,7 @@ class AbsoluteMajority:
             label = tk.Label(absolute_frame, text=f"{alternative} = {score}", font=DEF_FONT)
             label.pack(anchor=tk.W, padx=10, pady=5)
 
-        if len(list(self.second_round_winners_dict.keys())) > 1:
-            second_round_winner_text = 'Альтернативи ' + ', '.join(list(self.second_round_winners_dict.keys())) + f' виявились рівносильними з кількістю очків {self.second_round_scores[0][1]}'
-        else:
-            second_round_winner_text = f"Альтернатива \"{self.second_round_scores[0][0]}\" виявилась кращою"
-        second_round_winner_label = tk.Label(absolute_frame, text=second_round_winner_text, font=DEF_FONT)
+        second_round_winner_label = tk.Label(absolute_frame, text=get_winners_text(self.second_round_winners_dict), font=DEF_FONT)
         second_round_winner_label.pack(anchor=tk.W, padx=10, pady=5)
 
         return absolute_frame

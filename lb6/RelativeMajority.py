@@ -2,7 +2,7 @@ import tkinter as tk
 from pprint import pprint as pp
 
 from _consts import H1, H2, DEF_FONT
-from utils import execute_round
+from utils import execute_round, get_winners_text
 
 
 class RelativeMajority:
@@ -13,6 +13,9 @@ class RelativeMajority:
         self.winners = {}
 
         self.find_winner()
+
+    def get_method_name(self):
+        return 'Відносна більшість'
 
     def find_winner(self):
         scores, sorted_scores = execute_round(self.voting_profile)
@@ -40,12 +43,7 @@ class RelativeMajority:
             label = tk.Label(relative_frame, text=f"{alternative} = {score}", font=DEF_FONT)
             label.pack(anchor=tk.W, padx=10, pady=5)
 
-        if len(list(self.winners.keys())) > 1:
-            winner_text = 'Альтернативи ' + ', '.join(list(self.winners.keys())) + f' виявились рівносильними з кількістю очків {self.alternatives_scores[0][1]}'
-        else:
-            winner_text = f"Альтернатива \"{self.alternatives_scores[0][0]}\" виявилась кращою"
-
-        winner_label = tk.Label(relative_frame, text=winner_text, font=DEF_FONT)
+        winner_label = tk.Label(relative_frame, text=get_winners_text(self.winners), font=DEF_FONT)
         winner_label.pack(anchor=tk.W, padx=10, pady=5)
 
         return relative_frame
